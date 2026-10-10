@@ -8,3 +8,6 @@ node_modules/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Submodules / cloned tools
+watermarks-remover/

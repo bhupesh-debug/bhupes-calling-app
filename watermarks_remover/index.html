@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watermarks Remover — Privacy-First AI Provenance & Watermark Stripper</title>
+  <meta name="description" content="A privacy-first suite to inspect and strip AI watermarks, C2PA Content Credentials, EXIF/XMP markers, and invisible Unicode carriers from content you own.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            Watermarks Remover
+            <span class="brand-badge">Privacy First</span>
+          </div>
+          <div class="brand-subtitle">Local AI Provenance, C2PA, EXIF & Covert Carrier Sanitizer</div>
+        </div>
+      </div>
+
+      <div class="header-status-area">
+        <div class="privacy-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          100% Local Processing
+        </div>
+        <div id="status-indicator" class="status-indicator">
+          <span class="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="text-tab" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+        </svg>
+        Text Sanitizer (Layer A)
+      </button>
+
+      <button class="tab-btn" data-tab="file-tab" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        File & Image Sanitizer
+      </button>
+
+      <button class="tab-btn" data-tab="batch-tab" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+        Batch Studio
+      </button>
+
+      <button class="tab-btn" data-tab="watermark-tab" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/>
+          <path d="m14 7 3 3"/>
+          <path d="M5 6v4"/>
+          <path d="M19 14v4"/>
+        </svg>
+        Watermark Testing Lab
+      </button>
+
+      <button class="tab-btn" data-tab="capabilities-tab" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        System & Diagnostics
+      </button>
+    </nav>
+
+    <!-- TAB 1: TEXT SANITIZER -->
+    <section id="text-tab" class="tab-pane active">
+      <div class="grid-2col">
+        <!-- Input Column -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              Input Text & Carrier Analysis
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <div class="preset-bar">
+            <span style="font-size: 12px; color: var(--text-dim); align-self: center;">Try sample:</span>
+            <button class="preset-chip text-preset-btn" data-preset="zero-width">Zero-Width Marks</button>
+            <button class="preset-chip text-preset-btn" data-preset="homoglyphs">Cyrillic Homoglyphs</button>
+            <button class="preset-chip text-preset-btn" data-preset="ai-essay">AI Essay Tells</button>
+          </div>
+
+          <textarea id="text-input" class="textarea-styled" placeholder="Paste or type text containing suspected AI watermarks, invisible Unicode carriers, zero-width spaces, or homoglyph substitutions..."></textarea>
+
+          <div style="margin-top: 18px;" class="options-group">
+            <label class="option-row">
+              <input type="checkbox" id="opt-nfkc" checked>
+              <div class="option-info">
+                <div class="option-title">NFKC Normalization</div>
+                <div class="option-desc">Decomposes compatibility characters and canonicalizes equivalents.</div>
+              </div>
+            </label>
+            <label class="option-row">
+              <input type="checkbox" id="opt-homoglyphs" checked>
+              <div class="option-info">
+                <div class="option-title">Aggressive Homoglyph Replacement</div>
+                <div class="option-desc">Converts Greek, Cyrillic, and lookalike characters back to Latin standard.</div>
+              </div>
+            </label>
+            <label class="option-row">
+              <input type="checkbox" id="opt-spaces" checked>
+              <div class="option-info">
+                <div class="option-title">Normalize Whitespace</div>
+                <div class="option-desc">Collapses non-breaking spaces (NBSP), zero-width spaces, and control characters.</div>
+              </div>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button id="btn-clean-text" class="btn btn-primary" style="flex: 1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Sanitize Text
+            </button>
+            <button id="btn-detect-text" class="btn btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              Scan Only
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Column -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              Sanitization Report & Diff
+            </div>
+            <div class="card-actions">
+              <button id="btn-copy-cleaned" class="btn btn-secondary btn-sm" title="Copy Cleaned">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copy
+              </button>
+              <button id="btn-download-cleaned" class="btn btn-secondary btn-sm" title="Download Text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Inspection Box -->
+          <div id="text-inspect-container" style="display: none; margin-bottom: 16px;"></div>
+
+          <!-- Stats Bar -->
+          <div id="text-stats-bar" class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Characters</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Carriers</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Homoglyphs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">Ready</div>
+              <div class="stat-label">Status</div>
+            </div>
+          </div>
+
+          <!-- Diff Container -->
+          <div id="text-diff-container" class="diff-container" style="display: none;">
+            <div>
+              <div class="diff-header">Before (Covert Highlights)</div>
+              <div id="original-text-target" class="diff-panel"></div>
+            </div>
+            <div>
+              <div class="diff-header" style="color: var(--accent-emerald);">Sanitized Output</div>
+              <div id="cleaned-text-target" class="diff-panel"></div>
+            </div>
+          </div>
+
+          <div id="text-placeholder-msg" style="padding: 40px 20px; text-align: center; color: var(--text-dim);">
+            Enter or paste text on the left and click <strong>Sanitize Text</strong> to strip invisible markers and preview the output.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: FILE & IMAGE SANITIZER -->
+    <section id="file-tab" class="tab-pane">
+      <div class="grid-2col">
+        <!-- Upload & Options -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Upload Document or Image
+            </div>
+          </div>
+
+          <input type="file" id="file-input" style="display: none;">
+          <div id="file-dropzone" class="dropzone">
+            <div class="dropzone-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div class="dropzone-title">Click or Drag & Drop File Here</div>
+            <div class="dropzone-subtitle">Supported: Images (.png, .jpg, .webp), Documents (.md, .pdf, .docx, .html), Audio/Video (.mp4, .mp3, .wav)</div>
+            <div class="dropzone-tags">
+              <span class="tag-pill">C2PA / Provenance</span>
+              <span class="tag-pill">EXIF / XMP</span>
+              <span class="tag-pill">AI Generator Tags</span>
+              <span class="tag-pill">PDF Artifacts</span>
+            </div>
+          </div>
+
+          <!-- Active File Info -->
+          <div id="active-file-card" class="finding-item" style="display: none; margin-top: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+              <div>
+                <div id="active-file-name" style="font-weight: 600; color: #fff;">file.png</div>
+                <div id="active-file-size" style="font-size: 11px; color: var(--text-dim);">0 KB</div>
+              </div>
+            </div>
+            <span class="tag-pill">Ready</span>
+          </div>
+
+          <!-- File Clean Options -->
+          <div style="margin-top: 18px;" class="options-group">
+            <label class="option-row">
+              <input type="checkbox" id="opt-strip-all">
+              <div class="option-info">
+                <div class="option-title">Strip All Metadata (Aggressive)</div>
+                <div class="option-desc">Remove all EXIF, XMP, and metadata chunks rather than just AI/C2PA tags.</div>
+              </div>
+            </label>
+            <label class="option-row">
+              <input type="checkbox" id="opt-container-attachments" checked>
+              <div class="option-info">
+                <div class="option-title">Deep Container Sanitization</div>
+                <div class="option-desc">Scan embedded images and attachments inside PDF, DOCX, ODT and HTML containers.</div>
+              </div>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button id="btn-inspect-file" class="btn btn-secondary" style="flex: 1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              Inspect File
+            </button>
+            <button id="btn-clean-file" class="btn btn-primary" style="flex: 1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Sanitize File
+            </button>
+          </div>
+        </div>
+
+        <!-- Inspection & Cleaned Results -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              File Analysis & Export
+            </div>
+          </div>
+
+          <div id="file-report-container" style="display: none; margin-bottom: 20px;"></div>
+          <div id="file-cleaned-container" style="display: none;"></div>
+
+          <div id="file-placeholder-msg" style="padding: 60px 20px; text-align: center; color: var(--text-dim);">
+            Upload a file on the left to inspect its metadata and provenance tags.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: BATCH PROCESSOR -->
+    <section id="batch-tab" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            Batch Inspection & Sanitization Pipeline
+          </div>
+          <div class="card-actions">
+            <span id="batch-count-badge" class="tag-pill">0 files</span>
+          </div>
+        </div>
+
+        <input type="file" id="batch-file-input" multiple style="display: none;">
+        <div id="batch-dropzone" class="dropzone" style="padding: 30px 20px;">
+          <div class="dropzone-icon" style="width: 44px; height: 44px; margin-bottom: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="dropzone-title" style="font-size: 15px;">Add Multiple Files for Bulk Sanitization</div>
+          <div class="dropzone-subtitle" style="font-size: 12px; margin-bottom: 0;">Drop a folder or select multiple images, PDFs, or documents</div>
+        </div>
+
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+          <button id="btn-process-batch" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            Sanitize All Files
+          </button>
+        </div>
+
+        <table id="batch-files-table" class="batch-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Format</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="batch-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: WATERMARK TESTING LAB -->
+    <section id="watermark-tab" class="tab-pane">
+      <div class="grid-2col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              Generate Test Watermark
+            </div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+            Simulate watermark embedding (KGW / SynthID test harness) to evaluate detector sensitivity and benchmark removal fidelity.
+          </p>
+
+          <textarea id="wm-text-input" class="textarea-styled" style="min-height: 160px;" placeholder="Enter natural language seed text to generate a watermarked version..."></textarea>
+
+          <button id="btn-generate-watermark" class="btn btn-primary" style="margin-top: 16px; width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m14 7 3 3"/>
+              <path d="M5 6v4"/>
+              <path d="M19 14v4"/>
+            </svg>
+            Generate Watermarked Sample
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              Watermarked Output
+            </div>
+          </div>
+          <textarea id="wm-output" class="textarea-styled" style="min-height: 230px;" readonly placeholder="Watermarked text will appear here..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: SYSTEM & DIAGNOSTICS -->
+    <section id="capabilities-tab" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+            Engine Capabilities & Tool Status
+          </div>
+          <div class="card-actions">
+            <a href="/openapi.json" target="_blank" class="btn btn-secondary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              OpenAPI Spec
+            </a>
+          </div>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text-muted);">
+          The Watermarks Remover engine runs entirely as a Python stdlib-first local server. Optional system binaries (ExifTool, C2PATool, QPDF, Ghostscript, FFmpeg) enhance container parsing when installed on the host.
+        </p>
+
+        <div id="capabilities-grid" class="capabilities-grid">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+          <h4 style="font-family: var(--font-heading); color: #fff; margin-bottom: 8px;">Privacy & Security Contract</h4>
+          <ul style="color: var(--text-muted); font-size: 13px; line-height: 1.8; padding-left: 20px;">
+            <li>All sanitization occurs in volatile memory and ephemeral local buffers. No telemetry or external analytics.</li>
+            <li>Layer A strictly strips covert provenance signals while maintaining exact document structure, paragraphs, and styling.</li>
+            <li>Adheres to ethical ownership principles: designed for sanitizing content that you rightfully own or are authorized to process.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <div>Watermarks Remover • Open Source AI Provenance & Watermark Stripper</div>
+      <div>
+        Powered by <a href="https://github.com/guillaumemeyer/watermarks-remover" target="_blank">guillaumemeyer/watermarks-remover</a> • MIT License
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
