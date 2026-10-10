@@ -1,0 +1,20 @@
+{
+  "name": "bhupes-calling-app",
+  "version": "1.0.0",
+  "description": "Bhupes Calling - Medicare / T65 & Life-GBL Appointment Setter & Compliant Call Script PWA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "medicare",
+    "t65",
+    "call-script",
+    "appointment-setter",
+    "pwa",
+    "bankers-life"
+  ],
+  "author": "Bhupesh Dimri",
+  "license": "MIT"
+}
